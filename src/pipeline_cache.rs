@@ -23,6 +23,9 @@ use wgpu::util::make_spirv;
 use wgpu::{
     Features, PipelineLayout, PipelineLayoutDescriptor, PushConstantRange, ShaderModuleDescriptor,
 };
+use naga::valid::ShaderStages;
+use wgpu::PipelineCompilationOptions;
+
 
 pub struct CachedAppPipeline {
     state: CachedPipelineState,
@@ -95,7 +98,7 @@ impl ShaderCache {
         #[cfg(not(debug_assertions))]
         let composer = naga_oil::compose::Composer::non_validating();
 
-        let composer = composer.with_capabilities(capabilities);
+        let composer = composer.with_capabilities(capabilities, ShaderStages::COMPUTE);
 
         Self {
             composer,
@@ -461,6 +464,7 @@ impl AppPipelineCache {
             layout,
             module: &compute_module,
             entry_point: descriptor.entry_point.as_ref(),
+            compilation_options: PipelineCompilationOptions::default(),
         };
 
         let pipeline = self.device.create_compute_pipeline(&descriptor);

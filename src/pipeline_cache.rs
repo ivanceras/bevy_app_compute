@@ -17,15 +17,14 @@ use bevy::render::render_resource::{
 use bevy::render::renderer::RenderDevice;
 use bevy::utils::{Entry, HashMap, HashSet};
 use naga::valid::Capabilities;
+use naga::valid::ShaderStages;
 use parking_lot::Mutex;
 #[cfg(feature = "shader_format_spirv")]
 use wgpu::util::make_spirv;
+use wgpu::PipelineCompilationOptions;
 use wgpu::{
     Features, PipelineLayout, PipelineLayoutDescriptor, PushConstantRange, ShaderModuleDescriptor,
 };
-use naga::valid::ShaderStages;
-use wgpu::PipelineCompilationOptions;
-
 
 pub struct CachedAppPipeline {
     state: CachedPipelineState,
